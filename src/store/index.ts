@@ -5,7 +5,5 @@ const RootStore = combineReducers({
     dataQuestions: ReducerQuestions
 })
 
-export const store = createStore(RootStore)
-
-export type RootState = ReturnType<typeof RootStore>
-export type AppStore = ReturnType<typeof RootStore>
+export const store = createStore(RootStore);
+export type RootState = ReturnType<typeof RootStore>;

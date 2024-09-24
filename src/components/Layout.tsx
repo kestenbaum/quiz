@@ -1,23 +1,19 @@
-import React, {FC, useState} from 'react';
-import Quiz from "./Quiz";
+import {FC, useState} from 'react';
 import {useAppSelector} from "../hooks/useTypedSelector";
+import Quiz from "./Quiz";
 import Result from "./Result";
 
 const Layout: FC = () => {
-    {/*---- get questions ----*/}
     const dataQuestions = useAppSelector(state => state.dataQuestions.questions)
+    const [countSteps, setCountSteps] = useState<number>(0)
 
-    {/*---- get state steps quiz ----*/}
-    const [steps, setSteps] = useState<number>(0)
-
-    {/*---- functions ----*/}
-    const getStep = (value: number) => {
-        setSteps(value => value + 1)
+    function getCountsStep ()  {
+        setCountSteps(prevState => prevState + 1)
     }
 
     return (
         <div className='layout'>
-            {steps !== dataQuestions.length ? <Quiz props={getStep}/> : <Result />}
+            {countSteps !== dataQuestions.length ? <Quiz countSteps={getCountsStep}/> : <Result />}
         </div>
     );
 };

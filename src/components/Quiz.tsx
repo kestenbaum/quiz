@@ -1,47 +1,34 @@
-import React, {FC, useState} from 'react';
-import QuizItem from "./QuizItem";
-import {useAppSelector} from "../hooks/useTypedSelector";
+import {FC, useState} from 'react';
 import {useDispatch} from "react-redux";
+import {useAppSelector} from "../hooks/useTypedSelector";
 import {AddToCorrectQuestion} from "../store/reducer/reducerQuestions";
-import {IQuestions} from "../models";
+import QuizItem from "./QuizItem";
 
-interface IQuiz {
-    props: (value: number) => void
-}
 
-const Quiz: FC<IQuiz> = ({props}) => {
-
-    {/*---- functions ----*/}
-    const onClickVariable = (index: number) => {
-        setStep(prev => prev + 1)
-        props(step)
+const Quiz: FC<Quiz> = ({countSteps}) => {
+    const dispatch = useDispatch();
+    const [currentStep, setCurrentStep] = useState<number>(0);
+    const dataQuestions  = useAppSelector(state => state.dataQuestions.questions);
+    function handleSelectVariant (index: number)  {
+        setCurrentStep(prevState => prevState + 1)
+        countSteps(currentStep)
         if (index === question.current) {
             dispatch(AddToCorrectQuestion(1))
         }
     }
 
-    const getQuizItem = (array: IQuestions[], length: number) => {
-        let dataItems:IQuestions[] = []
+    function getQuizItem (array: Questions[], length: number) {
+        let dataItems:Questions[] = []
         for (let i = 0; i < length; i++) {
             let randomElement = array[Math.floor(Math.random() * array.length)]
             dataItems.length !== length && dataItems.push(randomElement)
         }
-        return dataItems
+        return dataItems;
     }
 
-    {/*---- create dispatch ----*/}
-    const dispatch = useDispatch()
-
-    {/*---- get questions ----*/}
-    const dataQuestions  = useAppSelector(state => state.dataQuestions.questions)
-
-    {/*---- steps ----*/}
-    const [step, setStep] = useState<number>(0)
-    const percentage = Math.round(step / dataQuestions.length * 100)
-
-    {/*---- get question ----*/}
+    const percentage = Math.round(currentStep / dataQuestions.length * 100)
     const questionsLimit = getQuizItem(dataQuestions, 10)
-    const question = questionsLimit[step]
+    const question = questionsLimit[currentStep]
 
     return (
         <div className='quiz'>
@@ -53,8 +40,8 @@ const Quiz: FC<IQuiz> = ({props}) => {
                 </span>
             </div>
             <QuizItem
-                props={question}
-                onClickVariable={onClickVariable}
+                items={question}
+                onClickVariable={handleSelectVariant}
             />
         </div>
     );

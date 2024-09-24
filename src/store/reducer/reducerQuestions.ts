@@ -1,12 +1,4 @@
-import {IAction, IQuestions} from "../../models";
-
-interface IInitialState {
-    questions: IQuestions[]
-    correct: number
-    dataRank: string[]
-}
-
-const initialState:IInitialState = {
+const initialState:QuizState = {
     questions: [
         {
             id: 1,
@@ -104,7 +96,7 @@ const initialState:IInitialState = {
     dataRank: ['Новичок', 'Опытный', 'Мастер']
 }
 
-export const ReducerQuestions = (state = initialState, action:IAction) => {
+export const ReducerQuestions = (state = initialState, action:Action) => {
     switch (action.type){
         case 'ADD':
             return {...state, correct: state.correct + action.payload}
